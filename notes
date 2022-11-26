@@ -1,0 +1,497 @@
+<!-- Execution Context -->
+Everythng happens inside an Execution Context.
+ 
+"Execution Context" has two components:-
+1. Memory Component/Variable Environment(varaiables & functions are stored as key-value pairs)
+2. Code Component/Thread of Execution(code)
+
+JS is a synchronous(executes in a specific order) single-threaded(executes one command at a time) language.
+
+
+<!-- Asynchronous VS Synchronous -->
+Asynchronous is a non-blocking architecture, so the execution of one task is not dependent on another. Tasks can run simultaneously. Synchronous is a blocking architecture, so the execution of each operation is dependent on the completion of the one before it.
+
+<!-- About JS -->
+For every function a new execution context is created.
+Call Stack maintains the order of execution of the  Execution Context.
+
+JS is a loosely typed language. One variable holding a particular data type say int can later hold another data type also say string.
+
+
+<!-- Hoisting  -->
+Hoisting is the default behavior of moving all the declarations at the top of the scope before code execution.
+
+Basically, it gives us an advantage that no matter where functions and variables are declared, they are moved to the top of their scope regardless of whether their scope is global or local. 
+
+For var:-
+console.log(a); //undefined  
+.....            
+.....            
+var a = 10;      
+
+
+For let and const :-
+----> also refer the image file( for let and const separate memory space is assigned by the js engine known as script in browser)
+
+The phase from the hoisting till its intialisation is the Temporal Dead Zone(TDZ). The variables in this zone can't be accessed. 
+
+console.log(a);  |
+.....            |
+.....            | TDZ of variable a(gives Reference Error)
+let a = 10;      |
+
+
+<!-- Lexical Environment -->
+Lexical Environment of a  function is its local memory + reference to parent where actually its physically present.
+
+Scope Chain is the chain of lexical environment and the parent references.
+function a(){
+    var b = 10;
+    c();
+    function c(){
+        console.log(b);  //10 
+    }
+}
+
+a();
+console.log(a);
+
+
+<!-- TypeError, SyntaxError, Reference Error -->
+TypeError --> re-assgning value to a const variable later on.
+
+SyntaxError -->not intialising const variable while declaring OR re-declaring the let variable of same variable name.
+
+Reference Error -->trying to access let/const variable before intialising it OR variable which is not defined.
+
+
+<!-- Block -->
+Block in JS is grouping of zero or more statements to use in place where JS expects a single statement(like in if condt  n stmnt).
+
+
+<!-- Closures -->
+A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). In other words, a closure gives you access to an outer function’s scope from an inner function. In JavaScript, closures are created every time a function is created, at function creation time.
+  
+function x(){ 
+    var a = 7;
+    return function y(){
+        console.log(a); 
+    }
+    <!-- return y; -->
+}
+var z = x();
+console.log(z);  <!-- f y(){console.log(a);} -->
+z(); <!-- 7 -->  
+
+
+USES:-
+Module Design Pattern
+Currying
+Functions like once
+setTimeouts
+Iterators
+memoize
+maintaining state in async world
+Helps in data hiding and encapsulation
+and many more....
+
+
+<!-- Disadvantages -->
+Over consumption of memory as closed over variables are not garbage collected.
+If not handled well can lead to memory leak.
+
+
+<!-- setTimeout + Closures -->
+function x(){
+    for(var i = 1; i<=5; i++){
+        setTimeout(function (){
+            console.log(i);
+        }, i*1000);
+    }
+    console.log("Namaste JS");
+}
+x();
+
+Output:-
+Namaste JS
+6
+6
+6
+6
+6
+
+Using let instead of var we get:-
+Namaste JS
+1
+2
+3
+4
+5
+
+
+
+
+
+function x(){
+    for(var i = 1; i<=5; i++){
+        function close(i){
+            setTimeout(function (){
+            console.log(i);
+            }, i*1000);
+        }
+        close(i);
+    }
+    console.log("Namaste JS");
+}
+x();
+
+Output:-
+Namaste JS
+1
+2
+3
+4
+5
+
+<!-- Questions on Closures -->
+# Write a function that would allow you to do this.
+var addSix = createBase(6);
+addSix(10); // returns 16
+addSix(21); // returns 27
+
+function createBase(i){
+    return function inner(n){
+        return i+n;
+    }
+}
+
+# How would you use a closure to create a private counter?
+
+function counter(){
+    var cnt = 0;
+    return{
+        add: function(inc){ cnt += inc; },
+        retrieve: function(){ return 'The counter is currently at: '+ cnt; }
+    }
+}
+
+var c = counter();
+c.add(5); 
+c.add(9); 
+c.retrieve(); 
+
+<!-- Function Statement -->
+function a(){
+    console.log("a called!")
+}
+a();
+
+<!-- Function Expression -->
+var b = function (){
+    console.log("b called!")
+}
+b();
+
+Difference btwn FS and FE is while hoisting(invoking functions before defining them).
+For FS output is a called but for FE is lead to TypeError saying b is not a function as b is treated as variable and assigned undefined while memory creation phase.
+
+<!-- Function Declaration -->
+Is same as Function Statement.
+
+<!-- Anonymous Function -->
+Function without a name.
+function () {} //leads to SyntaxError(Function statements require a function name).
+It does not have its own identity.
+Note: Used when functions are used as values.
+
+<!-- Named Function Expression -->
+var b = function xyz(){
+    console.log("b called!" + xyz)
+}
+b(); //b called!
+xyz(); //ReferenceError
+
+<!-- Difference between Parameters & Arguments? -->
+var c = function(param) {
+    console.log("c called!" +param)
+}
+c(1); // Here, 1 is argument
+
+<!-- First Class Functions aka First Class Citizens -->
+The ability to be used as values and passed as argument and also be returned from a function.
+
+var b = function (param1){
+    console.log(param1); // f xyz() {}
+}
+b(function xyz(){});
+
+
+
+<!--    Callback Function -->
+setTimeout(function () {
+    console.log("timer");
+}, 5000);
+
+function x(y){
+    console.log("x");
+    y();
+}
+x(function y(){         //Here y is a callback function
+    console.log("y");
+})
+
+Output- 
+x
+y
+timer  //after 5secs
+
+<!-- JS is a synchronous and single-threaded language -->
+
+<!-- Blocking the main thread -->
+This means that long-running JavaScript functions can block the thread, leading to an unresponsive page and a bad user experience. 
+
+<!-- Web APIs -->
+setTimeOut
+Console
+fetch
+DOM APIs
+Local Storage
+
+<!--event loop  -->
+Event Loop is the connectivity btwn Queue and Call Stack in JS engine.
+
+<!--Microtask and Callback Queue -->
+Mt has higher priority than Cb Queue. Mt Queue takes functions due to Promises and Mutation Observer only and rest goes in Cb Queue.
+
+
+<!-- JS Engine Architecture -->
+JS Engine(heart of JS Runtime Env.) takes up Code as an input. This code goes through three major steps-
+
+1. Parsing
+        Code is broken down into tokens and then into AST(Abstract Syntax Tree)[done by Syntax Parsers].
+
+
+<>
+    JS Engine can use Interpreter along with the Compiler which makes it a JIT(Just In Time) compiled language.
+</>
+
+
+2. Compilation
+        This AST is then converted into Byte Code by the Interpreter n then moved to the next phase.
+        Takes help of Compiler to optimize the code meanwhile.
+
+
+3. Execution
+        -- Memory Heap + Call Stack
+
+
+<>
+    Garbage Collector uses Mark and Sweerp Algorithm to remove unused variables from the memory heap.
+</>
+
+
+<!-- Higher-Order func.(hof) -->
+function x(){
+    console.log("x");
+}
+
+function y(x){
+    x();
+}
+//Here, y is the hof and x is the callback function.
+
+
+<!-- Map, Filter and Reduce HOF  -->
+
+<!-- Map Function -->
+Map func. is used to transform an array of values into another array of values.
+
+    var arr = [1,2,3,4,5];
+
+    <!-- double the values of arr -->
+    var arr2 = arr.map(function(value){
+        return value*2;
+    });
+
+    <-- OR -->
+    var arr2 = arr.map(value => value * 2);
+
+    console.log(arr2); // [2,4,6,8,10]
+
+    <!-- Binary of all the values of arr -->
+    var arr3 = arr.map(function(value){
+        return value.toString(2);
+    });
+
+    <-- OR -->
+    var arr3 = arr.map(value => value.toString(2));
+
+    console.log(arr3); // ["1","10","11","100","101"]
+
+
+<!-- Filter Function -->
+Filter func. is used to filter out values from an array.
+
+    var arr = [1,2,3,4,5];
+
+    <!-- Filter odd values -->
+    var arr2 = arr.filter(function(value){
+        return value%2 !== 0;
+    });
+
+    <-- OR -->
+    var arr2 = arr.filter(value => value%2 !== 0);
+
+    console.log(arr2); // [1,3,5]
+
+<!-- Reduce Function -->
+Reduce func. is used to reduce an array of values into a single value.
+
+    var arr = [1,2,3,4,5];
+
+    <!-- Sum of all the values of arr -->
+    var arr2 = arr.reduce(function (acc, value) {
+        return acc + value;
+    }, 0);
+      
+
+    <-- OR -->
+    var arr2 = arr.reduce((acc, value) => acc + value, 0);
+
+    console.log(arr2); // 15
+
+    <!-- Max of all values of arr -->
+    var arr3 = arr.reduce(function (acc, value) {
+        if(value > acc) acc = value;
+        return acc;
+    }, 0);
+
+    <-- OR -->
+    var arr3 = arr.reduce((acc, value) => value > acc ? value : acc, 0);
+
+    console.log(arr3); //5
+
+
+    
+<!-- Call,Apply and Bind Methods -->
+The call() method is a predefined JavaScript method. It can be used to invoke (call) a method with an owner object as the first argument and other arguments are the ones to be passed to that method. With call() , an object can use a method belonging to another object.
+
+
+Apply is same as call method except the fact tht the 2nd argument is as an array of arguments.
+
+Bind method does not directly invokes the method but returns the copy of that method which can be invoked later.
+
+
+<!-- Rest and Spread Operators -->
+Rest operator is used to pass an array as a list of arguments to a function.Rest parameter converts rest of the arguments passed to a function into an array.
+It must be at the end.
+
+Eg -
+function allDomains(domainName, mainExtention, ...extensions)
+{
+    console.log(domainName+ ' '+ mainExtention);    // Studytonight.com
+    console.log(extensions);    // [".xyz", ".online", ".in"]
+    console.log(extensions[0]);    // ".xyz"
+    console.log(extensions[1]);    // ".online"
+    console.log(extensions[2]);    // ".in"
+    console.log(extensions.length);    // 3
+}
+console.log(allDomains("Studytonight", ".com", ".xyz", ".online", ".in"));
+
+
+
+Spread operator is used to pass an array as a list of arguments to a function. It is used to split up array elements or object properties.
+Spread operator converts an array into individual array elements.
+It can be used to concat two arrays and also to copy array into anoter array.
+
+Eg -
+<!-- concating two arrays -->
+var arr1 = [1,2,3];
+var arr2 = [4,5,6];
+arr1 = [...arr1, ...arr2];
+console.log(arr1); // [1, 2, 3, 4, 5, 6]
+
+
+<!-- Function Currying using bind and concept of closures -->
+Currying is a technique of evaluating function with multiple arguments, into sequence of functions with single argument.
+It is a transformation of functions that translate a function from callable as add(1, 2, 3) into callable as add(1)(2)(3). It only transforms a function instead of calling it. It returns a new function until all arguments get exhausted.
+
+
+<!-- Currying using bind() method -->
+function mul(val1, val2){
+    console.log(val1*val2);
+}
+
+let out1 = mul.bind(this, 2);
+out1(3); // 6
+out1(4); // 8
+
+
+<!-- Issues in Callback -->
+1. Callback Hell / Pyramid of Doom
+2. Inversion of Control
+
+Callback Hell is repeated callbacks which makes the code difficult to read and maintain.
+
+Pyramid of Doom is the situation where the control over the code is inverted. The code is written in a way that the control is passed to the callback function and then the control is passed to the next callback function and so on.
+
+
+<!-- Promises -->
+Promises are used to handle asynchronous operations in JS. They are an alternative to callbacks.
+It is an object that represents the eventual completion or failure of an asynchronous operation and its resulting value.
+
+<!-- Promise vs callback -->
+const cart = ["shoes","pants","kurta"]
+
+<!-- Uing callback -->
+createOrder(cart, function(orderId){
+    proceedToPayment(orderId, function(paymentId){
+        showOrderSummary(paymentId, function(paymentId){
+            updateWalletBalance();
+        });
+    });
+});
+we were blindly trusting createOrder api here by passing the callback function to it.
+
+
+<!-- Using Promises -->
+createOrder(cart)
+    .then(function(orderId){
+      return proceedToPayment(orderId);
+    })
+    .then(function(paymentId){
+      return showOrderSummary(paymentId);
+    })
+    .then(function(paymentId){
+      return updateWalletBalance(paymentId);
+    });
+we are a callback func. to a promise object.Here the control with us. createOrder api will create a promise object and return it to us. We can then attach a callback function to it using then() method. 
+
+The then() method returns a promise object which we can use to attach another callback function to it. This way we can chain multiple callbacks to a promise object.
+
+<!-- Promise States -->
+1. Pending
+2. Fulfilled
+3. Rejected
+
+<!-- Promise Methods -->
+1. then()
+2. catch()
+3. finally()
+
+then() method is used to attach a callback function to a promise object. It takes two arguments, one for success and one for failure.
+
+catch() method is used to attach a callback function to a promise object in case of failure.
+
+finally() method is used to attach a callback function to a promise object which will be executed irrespective of the state of the promise object.
+
+<!-- Creating Promise -->
+const promise = new Promise(function(resolve, reject){
+    setTimeout(function(){
+        resolve("Promise resolved");
+    }, 2000);
+});
+
+<!-- Promise Chaining -->
+Promise chaining is used to chain multiple then() methods to a promise object. It is used to execute multiple asynchronous operations in a sequential manner.
+
