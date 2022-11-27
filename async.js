@@ -9,7 +9,7 @@ const datas = [
 function getDatas() {
   setTimeout(() => {
     let output = "";
-    datas.map((data, index) => {
+    datas.map((data) => {
       output += `<li>${data.name}</li>`;
     });
     document.body.innerHTML = output;
