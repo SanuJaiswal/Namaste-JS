@@ -30,13 +30,13 @@ console.log(x);
 console.log(getName);
 
 // For event loop
-function attachEvent() {
-  let count = 0;
-  document.getElementById("clickMe").addEventListener("click", function xyz() {
-    console.log("Clicked", ++count);
-  });
-}
-attachEvent();
+// function attachEvent() {
+//   let count = 0;
+//   document.getElementById("clickMe").addEventListener("click", function xyz() {
+//     console.log("Clicked", ++count);
+//   });
+// }
+// attachEvent();
 
 //hof use case
 const radius = [3, 1, 2, 4];
@@ -157,7 +157,18 @@ function sanu(a) {
 
 console.log(sanu(2)(5)(8));
 
-//another example
+//another example (infinte currying)
+
+// function add(a) {
+//   return function (b) {
+//     if (b) {
+//       return add(a + b);
+//     } else {
+//       return a;
+//     }
+//   };
+// }
+
 let sum = (a) => (b) => b ? sum(a + b) : a;
 console.log(sum(1)(2)(3)(4)());
 

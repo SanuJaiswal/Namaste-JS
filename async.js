@@ -1,6 +1,6 @@
 //ASYNC JS Programming
 //Callbacks, Promise, Async/Await
-
+console.log("In async file!!");
 const datas = [
   { name: "Sanu", profession: "SDE1" },
   { name: "Subham", profession: "SDE2" },
@@ -12,7 +12,7 @@ function getDatas() {
     datas.map((data) => {
       output += `<li>${data.name}</li>`;
     });
-    document.body.innerHTML = output;
+    //document.body.innerHTML = output;
   }, 1000);
 }
 
