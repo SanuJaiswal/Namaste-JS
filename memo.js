@@ -6,6 +6,7 @@ function memoize(fn) {
   return function (...args) {
     if (cache[args]) {
       console.log("Fetching from cache");
+      console.log(cache);
       return cache[args];
     }
     console.log("Calculating result first time");

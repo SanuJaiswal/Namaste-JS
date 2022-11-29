@@ -10,10 +10,24 @@
     <h1>Namaste JS</h1>
 
     <!-- <button id="clickMe">Click Me</button> -->
+
+    <!-- For Bubbling/Capturing -->
     <div>
       <button>Like Me</button>
     </div>
-    <a href="http://www.google.com" target="_blank">To Google</a>
+
+    <!-- For preventDeafault() -->
+    <div>
+      <a href="https://www.google.com">Google</a>
+    </div>
+
+    <!-- For debouncing & Throttling -->
+    <div>
+      <input type="text" onkeyup="betterFunction()" />
+    </div>
+
+    <button id="mybut" onclick="doMagic()">Noo</button>
+    <!-- JS Files -->
     <script src="index.js"></script>
     <script src="restSpread.js"></script>
     <script src="async.js"></script>
@@ -21,5 +35,7 @@
     <script src="useCase.js"></script>
     <script src="event.js"></script>
     <script src="memo.js"></script>
+    <script src="debounce.js"></script>
+    <script src="throttle.js"></script>
   </body>
 </html>
